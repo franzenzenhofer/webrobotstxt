@@ -1,0 +1,26 @@
+h1 
+  a(href='/') robots.txt checker
+  
+form(action='/',method='GET')
+  div#robotstxturl
+    div robots.txt url
+    div
+      input(type='text', name='robotstxturl', value=robotstxturi)
+      
+  div#useragent
+    div useragent
+    div
+      input(type='text', name='useragent')
+
+  div#testurls
+    div urls to test
+    div
+      textarea(name='testurls')= totestA.join("\n")
+  
+  input(type='submit')
+
+div#results
+  div
+    results
+  div
+      

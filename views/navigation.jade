@@ -1,0 +1,17 @@
+div#mainnavigation
+  h5 site navigation
+  - each nav in navigation
+    - if (nav.href)
+      li
+        a(href=nav.href)= nav.title
+    - else
+      li= nav.title
+    - if (nav.navpoints)
+      ul
+        - each np in nav.navpoints
+          - if (np.href)
+            li
+              a(href=np.href)= np.title
+          - else
+            li= np.title
+   
