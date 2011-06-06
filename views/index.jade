@@ -1,26 +1,77 @@
 h1 
   a(href='/') robots.txt checker
-  
-form(action='/',method='GET')
-  div#robotstxturl
-    div robots.txt url
-    div
-      input(type='text', name='robotstxturl', value=robotstxturi)
-      
-  div#useragent
-    div useragent
-    div
-      input(type='text', name='useragent')
 
-  div#testurls
-    div urls to test
-    div
-      textarea(name='testurls')= totestA.join("\n")
+div  
+  h2 testdata
   
-  input(type='submit')
+  form#checker(action='/',method='GET')
+    div#robotstxturl
+      h3 robots.txt url
+      div
+        input(type='text', name='robotstxturl', value=robotstxturi)
+        
+    div#useragent
+      h3 useragent
+      div
+        input(type='text', name='useragent', value=useragent)
+  
+    div#testurls
+      h3 urls to test
+      div
+        textarea(name='testurls')= totestA.join("\n")
+    
+    input(type='submit')
 
-div#results
+
+- if (msg)
+div#messages
+  h2 messages
   div
-    results
-  div
-      
+  
+  - if (msg.notes.length > 0)
+    div#notes
+      h3 notes
+      ul
+      - var items = msg.notes
+      - each item in items
+        li= item
+  
+  - if (msg.error.length > 0)
+    div#error
+      h3 error
+        ul
+        - each er in msg.error
+          li= er
+
+  - if (msg.results.length>0)
+    div#testresults
+      h3 test results
+      ul
+        li robots.txt:
+          a(href=robotstxturi,target='_blank')=robotstxturi
+        li  user-agent: 
+          span= useragent
+        li group: 
+          span= msg.results[0].group
+          
+          
+      ol
+        - each re in msg.results
+          li
+            ul
+              li= re.url
+              - if (re.disallowed === true)
+                li disallowed
+              - else
+                li allowed
+              li
+                -if (re.rules.length>0)
+                  ul
+                    - each rule in re.rules
+                      li= ['line', rule.linenumber].join(' ')
+                      li=[rule.type, ':', ' ', rule.rule].join('')
+                      li=rule.priority
+                - else
+                  | no rule match
+  
+        
