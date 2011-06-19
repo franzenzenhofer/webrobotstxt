@@ -24,54 +24,71 @@ div
 
 
 - if (msg)
-div#messages
-  h2 messages
-  div
+  div#messages
   
-  - if (msg.notes.length > 0)
-    div#notes
-      h3 notes
-      ul
-      - var items = msg.notes
-      - each item in items
-        li= item
-  
-  - if (msg.error.length > 0)
-    div#error
-      h3 error
+      
+    h2 messages
+    div
+    
+    - if (msg.notes.length > 0)
+      div#notes
+        h3 notes
         ul
-        - each er in msg.error
-          li= er
-
-  - if (msg.results.length>0)
-    div#testresults
-      h3 test results
-      ul
-        li robots.txt:
-          a(href=robotstxturi,target='_blank')=robotstxturi
-        li  user-agent: 
-          span= useragent
-        li group: 
-          span= msg.results[0].group
-          
-          
-      ol
-        - each re in msg.results
-          li
-            ul
-              li= re.url
-              - if (re.disallowed === true)
-                li disallowed
-              - else
-                li allowed
-              li
-                -if (re.rules.length>0)
-                  ul
-                    - each rule in re.rules
-                      li= ['line', rule.linenumber].join(' ')
-                      li=[rule.type, ':', ' ', rule.rule].join('')
-                      li=rule.priority
+          - var items = msg.notes
+          - each item in items
+            li= item
+    
+  
+    
+    - if (msg.error.length > 0)
+      div#error
+        h3 error
+          ul
+            - each er in msg.error
+              li= er
+  
+    - if (msg.results.length>0)
+      div#testresults
+        h3 test results
+        ul
+          li robots.txt:
+            a(href=robotstxturi,target='_blank')=robotstxturi
+          li  user-agent: 
+            span= useragent
+          li group: 
+            span= msg.results[0].group
+            
+            
+        ol
+          - each re in msg.results
+            li
+              ul
+                li= re.url
+                - if (re.disallowed === true)
+                  li disallowed
                 - else
-                  | no rule match
+                  li allowed
+                li
+                  -if (re.rules.length>0)
+                    ul
+                      - each rule in re.rules
+                        li
+                          a(href='#rt'+rule.linenumber)= ['line', rule.linenumber].join(' ')
+                        li=[rule.type, ':', ' ', rule.rule].join('')
+                        li=['priority', rule.priority].join(' ')
+                  - else
+                    | no rule match
+                    
+                  
+- if (txtA && txtA.length > 0)
+  div#txt
+    h2=robotstxturi
+    ol
+      - var z = 0
+      - each line in txtA
+        - z++
+        li
+          a(name='rt'+z)
+           span= line
   
         

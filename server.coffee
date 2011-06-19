@@ -1,13 +1,14 @@
 express = require 'express'
 util = require 'util'
 parseUri = require 'parseUri'
-#robotsTxt = require '../robotstxt/index.js'
-robotsTxt = require 'robotstxt'
+robotsTxt = require '../robotstxt/index.js'
+#robotsTxt = require 'robotstxt'
 
 
 robotstxturi = 'http://www.example.com/robots.txt'
 totestA = []
 useragent = ''
+
 
 
 app = express.createServer()
@@ -16,7 +17,7 @@ app.set 'views', __dirname + '/views'
 app.set 'view engine', 'jade'
 
 
-indexRender = (res, title='Robots.Txt Checker', des='Crawl, parse and test Robots.txt Files', msg, robotstxturi, totestA, useragent) ->
+indexRender = (res, title='Robots.Txt Checker', des='Crawl, parse and test Robots.txt Files', msg, robotstxturi, totestA, useragent, txtA) ->
 
   res.render 'index.jade', {
     title: title
@@ -25,6 +26,7 @@ indexRender = (res, title='Robots.Txt Checker', des='Crawl, parse and test Robot
     robotstxturi: robotstxturi
     totestA: totestA
     useragent:useragent
+    txtA: txtA
   }
 
 
@@ -36,6 +38,7 @@ app.get '/', (req, res) ->
     notes: []
     results: []
   
+  txtA = []
   #console.log req.query
   
   #parse robots.txt and find out if it is a valid robots.txt uri
@@ -67,7 +70,10 @@ app.get '/', (req, res) ->
               x = ['/', x].join ''
             xu = parseUri(x)
             if xu.path? and xu.path isnt ''
-              xu.path
+              if xu.query? and xu.query isnt ''
+                xu.path+'?'+xu.query
+              else
+                xu.path
             else
               null
           
@@ -85,17 +91,22 @@ app.get '/', (req, res) ->
       #create a new gate keeper
       rt = robotsTxt robotstxturi, useragent
       
+      rt.on 'crawled', (txt) ->
+        txtA = txt.split("\n")
+        
+      
       #when the gate keeper is ready
       rt.on 'ready', (gate_keeper) ->
         #console.log gate_keeper
         msg.results = (gate_keeper.why y for y in totestA)
         msg.notes.push "#{msg.results.length} URLs successfully tested"
         ##console.log msg.results
-        console.log msg.results[0].rules
-        ##console.log msg
+        #console.log msg.results[0].rules
+        #console.log msg
         console.log 'RENDER WITH DATA'
         ##console.log msg
-        indexRender(res, 'Robots.Txt Checker', 'a description', msg, robotstxturi, totestA, useragent)
+        console.log totestA
+        indexRender(res, 'Robots.Txt Checker', 'a description', msg, robotstxturi, totestA, useragent, txtA)
   else
     msg.notes.push 'please ente a valid robots.txt url and some test urls'
     console.log '##########RENDER WITHOUT DATA'

@@ -1,0 +1,18 @@
+info it worked if it ends with ok
+verbose cli [ 'node',
+verbose cli   '/Users/franzseo/local/node/bin/npm',
+verbose cli   'install' ]
+info using npm@1.0.1
+info using node@v0.5.0-pre
+verbose config file /Users/franzseo/.npmrc
+verbose config file /Users/franzseo/local/node/etc/npmrc
+ERR! Couldn't read dependencies.
+ERR! Error: ENOENT, No such file or directory '/Users/franzseo/dev/node/package.json'
+ERR! Report this *entire* log at:
+ERR!     <http://github.com/isaacs/npm/issues>
+ERR! or email it to:
+ERR!     <npm-@googlegroups.com>
+ERR! 
+ERR! System Darwin 10.7.0
+ERR! command "node" "/Users/franzseo/local/node/bin/npm" "install"
+verbose exit [ 2, true ]

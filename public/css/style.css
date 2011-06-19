@@ -165,8 +165,12 @@ a:hover { color: #036; }
 /**
  * Primary styles
  *
- * Author: 
+ * Author: Franz Enzenhofer
  */
+ 
+#main {margin: 5px; padding 5px;}
+#txt ol { margin-left: 5em; }
+
 
 
 
