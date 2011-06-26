@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Bangers&v1);
+@import url(http://fonts.googleapis.com/css?family=Rokkitt&v1);
 /**
  * HTML5 ✰ Boilerplate
  *
@@ -167,10 +169,60 @@ a:hover { color: #036; }
  *
  * Author: Franz Enzenhofer
  */
- 
-#main {margin: 5px; padding 5px;}
-#txt ol { margin-left: 5em; }
 
+body {
+padding: 0.5em;
+background-color: #FFF8EC;
+display: block;
+margin: 8px;
+}
+
+
+h1 a {
+font-family: 'Bangers', arial, serif; 
+font-size: 5em;
+text-decoration: none;
+color: #7BB;
+text-shadow: 0px -2px 0 #266, 0px 1px white, 1px 1px 5px #EEE;
+}
+
+#main {margin: 5px; padding 5px;
+text-align: justify;
+-moz-column-count: 2;
+-moz-column-gap: 1.5em;
+-moz-column-rule: 1px solid #c4c8cc;
+-webkit-column-count: 2;
+-webkit-column-gap: 1.5em;
+-webkit-column-rule: 1px solid #c4c8cc;
+
+}
+
+#txt {
+-moz-column-break-before: always;;
+ -webkit-column-break-before: always;
+}
+#txt ol { margin-left: 5em; 
+ }
+
+h2 { 
+font-family: 'Rokkitt', arial, serif;
+font-size:250%;
+
+text-shadow: 0px -1px 0 #AAA;
+
+
+}
+
+h3 { 
+margin-top:10px;
+font-family: 'Rokkitt', arial, serif;
+font-size:150%;
+/*text-shadow: 0px -1px 0 #AAA;*/
+
+
+}
+input { width: 97%; height:1.2em; }
+textarea {width: 97%; height:10em; }
 
 
 
