@@ -1,88 +1,93 @@
 h1 
   a(href='/') robots.txt checker
 
-div  
-  h2 testdata
-  
-  form#checker(action='/',method='GET')
-    div#robotstxturl
-      h3 robots.txt url
-      div
-        input(type='text', name='robotstxturl', value=robotstxturi)
-        
-    div#useragent
-      h3 useragent
-      div
-        input(type='text', name='useragent', value=useragent)
-  
-    div#testurls
-      h3 urls to test
-      div
-        textarea(name='testurls')= totestA.join("\n")
+div#inputandmessages
+  div#inputstuff  
+    form#checker(action='/',method='GET')
+      div#robotstxturl
+        h3 robots.txt url
+        div
+          input(type='text', name='robotstxturl', value=robotstxturi)
+          
+      div#useragent
+        h3 useragent
+        div
+          input(type='text', name='useragent', value=useragent)
     
-    input(type='submit')
-
-
-- if (msg)
-  div#messages
-  
+      div#testurls
+        h3 urls to test
+        div
+          textarea(name='testurls')= totestA.join("\n")
       
-    h2 messages
-    div
-    
-    - if (msg.notes.length > 0)
-      div#notes
-        h3 notes
-        ul
-          - var items = msg.notes
-          - each item in items
-            li= item
-    
+      input(type='submit')
   
+  
+  - if (msg)
+    div#messages
     
-    - if (msg.error.length > 0)
-      div#error
-        h3 error
+        
+      h2 messages
+      div
+      
+      - if (msg.notes.length > 0)
+        div#notes
+          h3 notes
           ul
-            - each er in msg.error
-              li= er
-  
-    - if (msg.results.length>0)
-      div#testresults
-        h3 test results
-        ul
-          li robots.txt:
-            a(href=robotstxturi,target='_blank')=robotstxturi
-          li  user-agent: 
-            span= useragent
-          li group: 
-            span= msg.results[0].group
-            
-            
-        ol
-          - each re in msg.results
-            li
-              ul
-                li= re.url
-                - if (re.disallowed === true)
-                  li disallowed
-                - else
-                  li allowed
-                li
-                  -if (re.rules.length>0)
-                    ul
-                      - each rule in re.rules
-                        li
-                          a(href='#rt'+rule.linenumber)= ['line', rule.linenumber].join(' ')
-                        li=[rule.type, ':', ' ', rule.rule].join('')
-                        li=['priority', rule.priority].join(' ')
+            - var items = msg.notes
+            - each item in items
+              li= item
+      
+    
+      
+      - if (msg.error.length > 0)
+        div#error
+          h3 error
+            ul
+              - each er in msg.error
+                li= er
+    
+      - if (msg.results.length>0)
+        div#testresults
+          h3 test results
+          ul
+            li robots.txt:
+              a(href=robotstxturi,target='_blank')=robotstxturi
+            li  user-agent: 
+              span= useragent
+            li group: 
+              span= msg.results[0].group
+              
+              
+          ol#results
+            - each re in msg.results
+              li.aresult
+                ul.resultx
+                  li url: 
+                    span.anurl= re.url
+                  - if (re.disallowed === true)
+                    li is: 
+                      span.disallowed disallow
                   - else
-                    | no rule match
-                    
+                    li is: 
+                      span.allowed allow
+                  li
+                    -if (re.rules.length>0)
+                      ol
+                        - each rule in re.rules
+                          li
+                            ul
+                              li
+                                a(href='#rt'+rule.linenumber)= ['line', rule.linenumber].join(' ')
+                              li=[rule.type, ':', ' ', rule.rule].join('')
+                              li=['priority', rule.priority].join(' ')
+                    - else
+                      | no rule match
+                      
 
-div#txt
+
 - if (txtA && txtA.length > 0)
-    h2=robotstxturi
+  div#txt
+    h3=robotstxturi
     ol
       - var z = 0
       - each line in txtA
@@ -90,5 +95,8 @@ div#txt
         li
           a(name='rt'+z)
            span= line
+
+a(href="https://github.com/franzenzenhofer/webrobotstxt")
+  img(style="position: absolute; top: 0; right: 0; border: 0;",src="https://d3nwyuy0nl342s.cloudfront.net/img/30f550e0d38ceb6ef5b81500c64d970b7fb0f028/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67",alt="Fork me on GitHub")
   
         
