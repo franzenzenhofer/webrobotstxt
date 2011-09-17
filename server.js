@@ -2,7 +2,7 @@
   var app, express, indexRender, parseUri, robotsTxt, robotstxturi_default, useragent_default, util;
   express = require('express');
   util = require('util');
-  parseUri = require('parseUri');
+  parseUri = require('./parseuri.js');
   robotsTxt = require('robotstxt');
   robotstxturi_default = 'http://www.google.com/robots.txt';
   useragent_default = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html) - FAKE";
@@ -133,5 +133,5 @@
       return indexRender(res, 'Robots.Txt Checker', 'a description', msg, robotstxturi, totestA, useragent);
     }
   });
-  app.listen(3003);
+  app.listen(process.env.PORT || 3000);
 }).call(this);
