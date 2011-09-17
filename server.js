@@ -1,9 +1,11 @@
 (function() {
-  var app, express, indexRender, parseUri, robotsTxt, util;
+  var app, express, indexRender, parseUri, robotsTxt, robotstxturi_default, useragent_default, util;
   express = require('express');
   util = require('util');
   parseUri = require('parseUri');
-  robotsTxt = require('../robotstxt/index.js');
+  robotsTxt = require('robotstxt');
+  robotstxturi_default = 'http://www.google.com/robots.txt';
+  useragent_default = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html) - FAKE";
   app = express.createServer();
   app.use(express.static(__dirname + '/public'));
   app.set('views', __dirname + '/views');
@@ -26,17 +28,16 @@
     });
   };
   app.get('/', function(req, res) {
-    var everythingok, msg, preParseTestUrls, robotstxturi, robotstxturi_default, rt, rtl, totestA, txtA, useragent, _ref;
+    var everythingok, msg, preParseTestUrls, robotstxturi, rt, rtl, totestA, txtA, useragent, _ref, _ref2, _ref3, _ref4;
     msg = {
       error: [],
       notes: [],
       results: []
     };
     txtA = [];
-    robotstxturi_default = 'http://www.example.com/robots.txt';
     robotstxturi = robotstxturi_default;
     totestA = [];
-    useragent = '';
+    useragent = useragent_default;
     everythingok = false;
     if (((_ref = req.query) != null ? _ref.robotstxturl : void 0) != null) {
       rt = parseUri(req.query.robotstxturl);
@@ -49,15 +50,17 @@
       } else {
         robotstxturi = req.query.robotstxturl.trim();
       }
+    } else {
+      msg.notes.push('please enter a valid robots.txt URL');
     }
     if (req.query.testurls != null) {
-      totestA = req.query.testurls.split("\n");
+      totestA = req.query.testurls.split(/\s/);
       preParseTestUrls = function(xA) {
         var preParseTestUrl, tempA, x, _i, _len;
         preParseTestUrl = function(x) {
           var xu;
           x = x.trim();
-          if ((x[0] != null) && x[0].toLowerCase() !== 'h' && x[0] !== '/') {
+          if ((x[0] != null) && x[0] !== '/') {
             x = ['/', x].join('');
           }
           xu = parseUri(x);
@@ -90,11 +93,16 @@
         return tempA;
       };
       totestA = preParseTestUrls(totestA);
+      if (totestA.length === 0) {
+        msg.notes.push('please enter some test URLs');
+      }
     } else {
-      msg.error.push('no test URLs given');
+      msg.notes.push('please enter some test URLs');
     }
-    useragent = req.query.useragent.trim();
-    if (robotstxturi !== robotstxturi_default && totestA.length !== 0) {
+    if ((req != null ? (_ref2 = req.query) != null ? _ref2.useragent : void 0 : void 0) != null) {
+      useragent = req != null ? (_ref3 = req.query) != null ? (_ref4 = _ref3.useragent) != null ? _ref4.trim() : void 0 : void 0 : void 0;
+    }
+    if (robotstxturi && totestA.length !== 0) {
       rt = robotsTxt(robotstxturi, useragent);
       rt.on('crawled', function(txt) {
         return txtA = txt.split("\n");
@@ -121,9 +129,8 @@
         return indexRender(res, 'Error', 'a description', msg, robotstxturi, totestA, useragent, txtA);
       });
     } else {
-      msg.notes.push('please ente a valid robots.txt url and some test urls');
       console.log('##########RENDER WITHOUT VALID DATA');
-      return indexRender(res, 'Robots.Txt Checker', 'a description', msg, robotstxturi, totestA);
+      return indexRender(res, 'Robots.Txt Checker', 'a description', msg, robotstxturi, totestA, useragent);
     }
   });
   app.listen(3003);

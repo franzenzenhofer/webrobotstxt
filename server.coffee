@@ -1,8 +1,8 @@
 express = require 'express'
 util = require 'util'
 parseUri = require 'parseUri'
-robotsTxt = require '../robotstxt/index.js'
-#robotsTxt = require 'robotstxt'
+#robotsTxt = require '../robotstxt/index.js'
+robotsTxt = require 'robotstxt'
 
 
 robotstxturi_default = 'http://www.google.com/robots.txt'
@@ -137,4 +137,4 @@ app.get '/', (req, res) ->
     
 
   
-app.listen(3003);
+app.listen(process.env.PORT || 3000);
