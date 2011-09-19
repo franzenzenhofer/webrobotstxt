@@ -6,7 +6,7 @@ robotsTxt = require 'robotstxt'
 
 
 robotstxturi_default = 'http://www.google.com/robots.txt'
-useragent_default = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html) - FAKE"
+useragent_default = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html - fake - it's a harmless robots.txt checker)"
 
 
 
