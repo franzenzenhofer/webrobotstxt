@@ -3,7 +3,7 @@
   express = require('express');
   util = require('util');
   parseUri = require('./parseuri.js');
-  robotsTxt = require('robotstxt');
+  robotsTxt = require('../robotstxt/index.js');
   robotstxturi_default = 'http://www.google.com/robots.txt';
   useragent_default = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html - fake - it's a harmless robots.txt checker)";
   app = express.createServer();
@@ -58,17 +58,19 @@
       preParseTestUrls = function(xA) {
         var preParseTestUrl, tempA, x, _i, _len;
         preParseTestUrl = function(x) {
-          var xu;
+          var r, xu;
           x = x.trim();
-          if ((x[0] != null) && x[0] !== '/') {
-            x = ['/', x].join('');
+          if ((x[0] != null) && (x[0] !== '/')) {
+            if (x.substr(0, 4) !== 'http') {
+              x = ['/', x].join('');
+            }
           }
           xu = parseUri(x);
           if ((xu.path != null) && xu.path !== '') {
             if ((xu.query != null) && xu.query !== '') {
-              return xu.path + '?' + xu.query;
+              return r = xu.path + '?' + xu.query;
             } else {
-              return xu.path;
+              return r = xu.path;
             }
           } else {
             return null;
@@ -121,6 +123,7 @@
         msg.notes.push("" + msg.results.length + " URLs successfully tested");
         console.log('RENDER WITH DATA');
         console.log(totestA);
+        console.log(msg);
         return indexRender(res, 'Robots.Txt Checker', 'a description', msg, robotstxturi, totestA, useragent, txtA);
       });
       return rt.on('error', function(e) {

@@ -1,8 +1,8 @@
 express = require 'express'
 util = require 'util'
 parseUri = require './parseuri.js'
-#robotsTxt = require '../robotstxt/index.js'
-robotsTxt = require 'robotstxt'
+robotsTxt = require '../robotstxt/index.js'
+#robotsTxt = require 'robotstxt'
 
 
 robotstxturi_default = 'http://www.google.com/robots.txt'
@@ -73,14 +73,17 @@ app.get '/', (req, res) ->
     preParseTestUrls = (xA) ->
       preParseTestUrl = (x) -> 
         x = x.trim()
-        if x[0]? and x[0] isnt '/'
-          x = ['/', x].join ''
+        if x[0]? and (x[0] isnt '/')
+          if x.substr(0,4) isnt 'http'
+            x = ['/', x].join ''
         xu = parseUri(x)
         if xu.path? and xu.path isnt ''
           if xu.query? and xu.query isnt ''
-            xu.path+'?'+xu.query
+            r = xu.path+'?'+xu.query
           else
-            xu.path
+            r= xu.path
+#        if r? isnt '/'
+#          r = ['/', r].join ''
         else
           null
       
@@ -121,6 +124,7 @@ app.get '/', (req, res) ->
       console.log 'RENDER WITH DATA'
       ##console.log msg
       console.log totestA
+      console.log msg
       indexRender(res, 'Robots.Txt Checker', 'a description', msg, robotstxturi, totestA, useragent, txtA)
     
     rt.on 'error', (e) ->
