@@ -28,7 +28,7 @@
     });
   };
   app.get('/', function(req, res) {
-    var everythingok, msg, preParseTestUrls, robotstxturi, rt, rtl, totestA, txtA, useragent, _ref, _ref2, _ref3, _ref4;
+    var everythingok, msg, preParseTestUrls, robotstxturi, rt, rtl, totestA, txtA, useragent, _ref, _ref2;
     msg = {
       error: [],
       notes: [],
@@ -54,6 +54,11 @@
       msg.notes.push('please enter a valid robots.txt URL');
     }
     if (req.query.testurls != null) {
+      console.log("req.query.testurls");
+      console.log(req.query);
+      if (Array.isArray(req.query.testurls)) {
+        req.query.testurls = req.query.testurls[0];
+      }
       totestA = req.query.testurls.split(/\s/);
       preParseTestUrls = function(xA) {
         var preParseTestUrl, tempA, x, _i, _len;
@@ -70,7 +75,12 @@
             if ((xu.query != null) && xu.query !== '') {
               return r = xu.path + '?' + xu.query;
             } else {
-              return r = xu.path;
+              r = xu.path;
+              if (x.substr(x.length - 1) === '?') {
+                return r = r + '?';
+              } else {
+                return r;
+              }
             }
           } else {
             return null;
@@ -102,7 +112,14 @@
       msg.notes.push('please enter some test URLs');
     }
     if ((req != null ? (_ref2 = req.query) != null ? _ref2.useragent : void 0 : void 0) != null) {
-      useragent = req != null ? (_ref3 = req.query) != null ? (_ref4 = _ref3.useragent) != null ? _ref4.trim() : void 0 : void 0 : void 0;
+      useragent = req.query.useragent;
+    }
+    console.log('USERAGENT ' + useragent);
+    if (useragent && Array.isArray(useragent)) {
+      useragent = useragent[0];
+    }
+    if (useragent) {
+      useragent = useragent.trim();
     }
     if (robotstxturi && totestA.length !== 0) {
       rt = robotsTxt(robotstxturi, useragent);
@@ -111,6 +128,8 @@
       });
       rt.on('ready', function(gate_keeper) {
         var y;
+        console.log("totestA just before it gets tested");
+        console.log(totestA);
         msg.results = (function() {
           var _i, _len, _results;
           _results = [];
@@ -133,6 +152,9 @@
       });
     } else {
       console.log('##########RENDER WITHOUT VALID DATA');
+      while ((totestA != null ? totestA[0] : void 0) == null) {
+        totestA[0] = '/';
+      }
       return indexRender(res, 'Robots.Txt Checker', 'a description', msg, robotstxturi, totestA, useragent);
     }
   });
