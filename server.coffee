@@ -1,7 +1,7 @@
 express = require 'express'
 util = require 'util'
 parseUri = require './parseuri.js'
-#robotsTxt = require '../robotstxt/index.js'
+#robotsTxt = require '../robotstxt/index.coffee'
 robotsTxt = require 'robotstxt'
 
 
