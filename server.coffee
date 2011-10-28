@@ -1,8 +1,8 @@
 express = require 'express'
 util = require 'util'
 parseUri = require './parseuri.js'
-#robotsTxt = require '../robotstxt/index.coffee'
-robotsTxt = require 'robotstxt'
+robotsTxt = require '../robotstxt/index.coffee'
+#robotsTxt = require 'robotstxt'
 
 
 robotstxturi_default = 'http://www.google.com/robots.txt'
@@ -55,7 +55,7 @@ app.get '/', (req, res) ->
 
     #its not a valid robots.txt uri
     if rtl isnt '/robots.txt'
-      console.log 'not a valid robots.txt url'
+      #console.log 'not a valid robots.txt url'
       msg.error.push 'given robots.txt url is not a valid robots.txt url (must end in /robots.txt)'
     else
       #trim the robots.txt uri string
@@ -67,8 +67,8 @@ app.get '/', (req, res) ->
   #PREPARE THE TEST URLs
   #prepare the test uris
   if req.query.testurls?
-    console.log "req.query.testurls"
-    console.log req.query
+    #console.log "req.query.testurls"
+    #console.log req.query
     #console.log req.query.testurls
     if Array.isArray req.query.testurls
       req.query.testurls = req.query.testurls[0]
@@ -115,7 +115,7 @@ app.get '/', (req, res) ->
   if req?.query?.useragent?
     useragent = req.query.useragent
 
-  console.log 'USERAGENT ' + useragent
+  #console.log 'USERAGENT ' + useragent
 
   if useragent and Array.isArray useragent
     useragent = useragent[0]
@@ -136,32 +136,32 @@ app.get '/', (req, res) ->
     #when the gate keeper is ready
     rt.on 'ready', (gate_keeper) ->
       #console.log gate_keeper
-      console.log "totestA just before it gets tested"
-      console.log totestA
+      #console.log "totestA just before it gets tested"
+      #console.log totestA
       msg.results = (gate_keeper.why y for y in totestA)
       msg.notes.push "#{msg.results.length} URLs successfully tested"
-      ##console.log msg.results
+      #console.log msg.results
       #console.log msg.results[0].rules
       #console.log msg
-      console.log 'RENDER WITH DATA'
-      ##console.log msg
-      console.log totestA
-      console.log msg
+      #console.log 'RENDER WITH DATA'
+      #console.log msg
+      #console.log totestA
+      #console.log msg
       indexRender(res, 'Robots.Txt Checker', 'a description', msg, robotstxturi, totestA, useragent, txtA)
 
     rt.on 'error', (e) ->
-      console.log 'RENDER WITH DATA BUT NODE.JS ERROR'
+      #console.log 'RENDER WITH DATA BUT NODE.JS ERROR'
       msg.error.push e.toString()
       indexRender(res, 'Error', 'a description', msg, robotstxturi, totestA, useragent, txtA)
 
   else
 
-    console.log '##########RENDER WITHOUT VALID DATA'
+    #console.log '#RENDER WITHOUT VALID DATA'
     until totestA?[0]?
       totestA[0]='/'
     indexRender(res, 'Robots.Txt Checker', 'a description', msg, robotstxturi, totestA,useragent)
 
-  ##console.log msg
+  #console.log msg
 
 
 

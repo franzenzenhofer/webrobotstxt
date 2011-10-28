@@ -3,7 +3,7 @@
   express = require('express');
   util = require('util');
   parseUri = require('./parseuri.js');
-  robotsTxt = require('robotstxt');
+  robotsTxt = require('../robotstxt/index.coffee');
   robotstxturi_default = 'http://www.google.com/robots.txt';
   useragent_default = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html - fake - a harmless robotstxt checker)";
   app = express.createServer();
@@ -45,7 +45,6 @@
     if (((rt != null ? rt.path : void 0) != null) && rt.path !== '') {
       rtl = rt.path.toLowerCase().trim();
       if (rtl !== '/robots.txt') {
-        console.log('not a valid robots.txt url');
         msg.error.push('given robots.txt url is not a valid robots.txt url (must end in /robots.txt)');
       } else {
         robotstxturi = req.query.robotstxturl.trim();
@@ -54,8 +53,6 @@
       msg.notes.push('please enter a valid robots.txt URL');
     }
     if (req.query.testurls != null) {
-      console.log("req.query.testurls");
-      console.log(req.query);
       if (Array.isArray(req.query.testurls)) {
         req.query.testurls = req.query.testurls[0];
       }
@@ -114,7 +111,6 @@
     if ((req != null ? (_ref2 = req.query) != null ? _ref2.useragent : void 0 : void 0) != null) {
       useragent = req.query.useragent;
     }
-    console.log('USERAGENT ' + useragent);
     if (useragent && Array.isArray(useragent)) {
       useragent = useragent[0];
     }
@@ -128,8 +124,6 @@
       });
       rt.on('ready', function(gate_keeper) {
         var y;
-        console.log("totestA just before it gets tested");
-        console.log(totestA);
         msg.results = (function() {
           var _i, _len, _results;
           _results = [];
@@ -140,18 +134,13 @@
           return _results;
         })();
         msg.notes.push("" + msg.results.length + " URLs successfully tested");
-        console.log('RENDER WITH DATA');
-        console.log(totestA);
-        console.log(msg);
         return indexRender(res, 'Robots.Txt Checker', 'a description', msg, robotstxturi, totestA, useragent, txtA);
       });
       return rt.on('error', function(e) {
-        console.log('RENDER WITH DATA BUT NODE.JS ERROR');
         msg.error.push(e.toString());
         return indexRender(res, 'Error', 'a description', msg, robotstxturi, totestA, useragent, txtA);
       });
     } else {
-      console.log('##########RENDER WITHOUT VALID DATA');
       while ((totestA != null ? totestA[0] : void 0) == null) {
         totestA[0] = '/';
       }
