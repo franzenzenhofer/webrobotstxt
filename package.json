@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "express": "*",
-    "robotstxt": "0.0.5-0",
+    "robotstxt": "0.0.4-5",
     "parseUri": "*",
     "jade": "*"
     }
